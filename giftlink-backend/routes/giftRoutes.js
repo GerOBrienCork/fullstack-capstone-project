@@ -8,7 +8,7 @@ router.get('/', async (req, res) => {
 
         const collection = db.collection("gifts");
 
-        const gifts = await db.collection.find({}).toArray();
+        const gifts = await collection.find({}).toArray();
 
         res.json(gifts);
     } catch (e) {
