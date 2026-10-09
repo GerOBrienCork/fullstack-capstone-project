@@ -1,21 +1,33 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {urlConfig} from '../../config';
+import { urlConfig } from '../../config';
 
 function MainPage() {
     const [gifts, setGifts] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Task 1: Write async fetch operation
-        // Write your code below this line
+		// fetch all gifts
+        const fetchGifts = async () => {
+            try {
+                let url = `${urlConfig.backendUrl}/api/gifts`
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error(`HTTP error; ${response.status}`)
+                }
+                const data = await response.json();
+                setGifts(data);
+            } catch (error) {
+                console.log('Fetch error: ' + error.message);
+            }
+        };
+
+        fetchGifts();
     }, []);
 
-    // Task 2: Navigate to details page
     const goToDetailsPage = (productId) => {
-        // Write your code below this line
-
-      };
+        navigate(`/app/product/${productId}`);
+    };
 
     // Task 3: Format timestamp
     const formatDate = (timestamp) => {
