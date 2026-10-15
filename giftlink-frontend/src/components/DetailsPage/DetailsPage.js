@@ -13,7 +13,7 @@ function DetailsPage() {
         const authenticationToken = sessionStorage.getItem('auth-token');
         if (!authenticationToken) {
 			navigate('/app/login');
-            return
+            return;
         }
 
         // get the gift to be rendered on the details page
@@ -37,7 +37,7 @@ function DetailsPage() {
 
         window.scrollTo(0,0);
 
-    }, [productId]);
+    }, [productId, navigate]);
 
 
     const handleBackClick = () => {
