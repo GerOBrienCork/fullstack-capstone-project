@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import './DetailsPage.css';
+import {urlConfig} from '../../config';
+
 
 function DetailsPage() {
     const navigate = useNavigate();
@@ -9,12 +11,38 @@ function DetailsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    function formatDate(timestamp) {
+        if (!timestamp) {
+            return 'Date unavailable';
+        }
+    
+        // Convert Unix timestamps in seconds to milliseconds
+        const timestampInMilliseconds =
+            typeof timestamp === 'number' && timestamp < 10000000000
+                ? timestamp * 1000
+                : timestamp;
+    
+        const date = new Date(timestampInMilliseconds);
+    
+        if (Number.isNaN(date.getTime())) {
+            return 'Invalid date';
+        }
+    
+        return date.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+    }
+
 	useEffect(() => {
+        /*
         const authenticationToken = sessionStorage.getItem('auth-token');
         if (!authenticationToken) {
 			navigate('/app/login');
             return;
         }
+        */
 
         // get the gift to be rendered on the details page
         const fetchGift = async () => {
@@ -38,7 +66,6 @@ function DetailsPage() {
         window.scrollTo(0,0);
 
     }, [productId, navigate]);
-
 
     const handleBackClick = () => {
 		navigate(-1);
@@ -88,11 +115,11 @@ return (
                         )}
                     </div>
  
-                    <p><strong>Category:</strong>{gift.category}</p>
-                    <p><strong>Condition:</strong>{gift.condition}</p>
-                    <p><strong>Date Added:</strong>{gift.date_added}</p>
-                    <p><strong>Age (Years):</strong>{gift.age}</p>
-                    <p><strong>Description:</strong>{gift.description}</p>
+                    <p><strong>Category: </strong>{gift.category}</p>
+                    <p><strong>Condition: </strong>{gift.condition}</p>
+                    <p><strong>Date Added: </strong>{formatDate(gift.date_added)}</p>
+                    <p><strong>Age (Years): </strong>{gift.age_years}</p>
+                    <p><strong>Description: </strong>{gift.description}</p>
                 </div>
             
                 <div className="comments-section mt-4">
