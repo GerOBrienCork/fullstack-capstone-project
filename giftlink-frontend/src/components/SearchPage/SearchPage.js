@@ -57,7 +57,7 @@ function SearchPage() {
     const navigate = useNavigate();
     
     const goToDetailsPage = (productId) => {
-        // Task 6. Enable navigation to the details page of a selected gift.
+        navigate(`/app/product/${productId}`);
     };
 
 
@@ -96,9 +96,15 @@ function SearchPage() {
                             />
                         </div>
                     </div>
-                    {/* Task 7: Add text input field for search criteria*/}
-                    {/* Task 8: Implement search button with onClick event to trigger search:*/}
-
+                    <input
+                        type="text"
+                        id="searchQuery"
+                        className="form-control mb-2"
+                        placeholder="Search for items..."
+                        value={searchQuery}
+                        onChange={e => setSearchQuery(e.target.value)}
+                    />
+                    <button onClick={handleSearch} className='btn btn-primary'>Search</button>
 
                     <div className="search-results mt-4">
                         {searchResults.length > 0 ? (
