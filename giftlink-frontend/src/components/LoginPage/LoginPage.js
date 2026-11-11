@@ -38,9 +38,21 @@ function LoginPage() {
               }
             );
 
-
-
-
+            const json = await response.json();
+            if (json.authtoken) {
+                sessionStorage.setItem('auth-token', json.authtoken);
+                sessionStorage.setItem('name', json.userName);
+                sessionStorage.setItem('email', json.email);
+                setIsLoggedIn(true);
+                navigate('/app');
+            } else {
+                document.getElementById("email").value = "";
+                document.getElementById("password").value = "";
+                setIncorrect("Wrong password. Try again.");
+                setTimeout(() => {
+                    setIncorrect(""); // Clear the error message after 2 seconds
+                }, 2000);
+            }
 
 
         } catch(e) {
@@ -77,6 +89,8 @@ function LoginPage() {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
 	                    />
+
+                        <span style={{color:'red',height:'.5cm',display:'block',fontStyle:'italic',fontSize:'12px'}}>{incorrect}</span>
                     </div>
 
                     <button className="btn btn-primary w-100 mb-3" onClick={handleLogin}>Login</button>
