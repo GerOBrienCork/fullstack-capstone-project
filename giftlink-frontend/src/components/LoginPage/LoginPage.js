@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { urlConfig } from '../../config';
 import { useAppContext } from '../../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
@@ -26,7 +26,7 @@ function LoginPage() {
             const response = await fetch(
               `${urlConfig.backendUrl}/api/auth/login`,
               {
-                method: POST,
+                method: 'POST',
                 headers: {
                     'content-type': 'application/json',
                     'Authorization': bearerToken ? `Bearer ${bearerToken}` : '',
@@ -34,7 +34,7 @@ function LoginPage() {
                 body: JSON.stringify({
                     email: email,
                     password: password,
-                })
+                }),
               }
             );
 
@@ -53,7 +53,6 @@ function LoginPage() {
                     setIncorrect(""); // Clear the error message after 2 seconds
                 }, 2000);
             }
-
 
         } catch(e) {
             console.log("Error fetching details: " + e.message);
