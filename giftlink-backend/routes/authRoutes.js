@@ -54,6 +54,59 @@ router.post('/register', async (req, res) => {
     }
 });
 
+router.put(
+    '/update',    
+    [
+        body('name').trim().notEmpty().withMessage('First name is required'),
+    ],
+    async (req, res) => {
+
+        // first check for errors in the input
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            logger.error (
+                'Validation errors in update request',
+                errors.array()
+            );
+
+            return res.status(400).json({errors: errors.array()});
+        }
+
+        try {
+            const email = req.headers.email;
+            if (!email) {
+                logger.error('Email not found in the request headers');
+                return res.status(400).json({error: "Email not found in the request headers"})
+            }
+
+            const db = await connectToDatabase();
+            const collection = db.collection('users');
+            const existingUser = await collection.findOne({ email });
+
+            existingUser.firstName = req.body.name;
+            existingUser.updatedAt = new Date();
+
+            const updatedUser = await collection.findOneAndUpdate(
+                { email },
+                { $set: existingUser },
+                { returnDocument: 'after' }
+            );
+
+            const payload = {
+                user: {
+                    id: updatedUser._id.toString(),
+                },
+            };
+            const authtoken = jwt.sign(payload, JWT_SECRET);
+    
+            logger.info('User updated successfully');
+            res.json({ authtoken });
+
+        } catch(e) {
+            return res.status(500).send('Internal server error');
+        }
+});
+
 router.post('/login', async (req, res) => {
     try {
         const db = await connectToDatabase();
