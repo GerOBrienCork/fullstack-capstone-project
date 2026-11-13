@@ -78,17 +78,18 @@ const Profile = () => {
             });
 
             if (response.ok) {
-            // Update the user details in session storage
-            //Step 1: Task 4
-            //Step 1: Task 5
-            setUserDetails(updatedDetails);
-            setEditMode(false);
-            // Display success message to the user
-            setChanged("Name Changed Successfully!");
-            setTimeout(() => {
-                setChanged("");
-                navigate("/");
-            }, 1000);
+                // Update the user details in session storage
+                sessionStorage('name', updatedDetails.name);
+                setUserName(updatedDetails.name);
+                setUserDetails(updatedDetails);
+                setEditMode(false);
+
+                // Display success message to the user
+                setChanged("Name Changed Successfully!");
+                setTimeout(() => {
+                    setChanged("");
+                    navigate("/");
+                }, 1000);
 
             } else {
                 throw new Error("Failed to update profile");
