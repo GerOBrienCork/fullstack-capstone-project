@@ -55,45 +55,48 @@ const Profile = () => {
     };
 
     const handleSubmit = async (e) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    try {
-        const authtoken = sessionStorage.getItem("auth-token");
-        const email = sessionStorage.getItem("email");
+        try {
+            const authtoken = sessionStorage.getItem("auth-token");
+            const email = sessionStorage.getItem("email");
 
-        if (!authtoken || !email) {
-        navigate("/app/login");
-        return;
+            if (!authtoken || !email) {
+                navigate("/app/login");
+                return;
+            }
+
+            const payload = { ...updatedDetails };
+            const response = await fetch(`${urlConfig.backendUrl}/api/auth/update`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${authtoken}`,
+                    'email': email,
+                },
+                body: JSON.stringify(payload), 
+            });
+
+            if (response.ok) {
+            // Update the user details in session storage
+            //Step 1: Task 4
+            //Step 1: Task 5
+            setUserDetails(updatedDetails);
+            setEditMode(false);
+            // Display success message to the user
+            setChanged("Name Changed Successfully!");
+            setTimeout(() => {
+                setChanged("");
+                navigate("/");
+            }, 1000);
+
+            } else {
+                throw new Error("Failed to update profile");
+            }
+        } catch (error) {
+            console.error(error);
+            console.log("Error updating details: " + e.message);
         }
-
-        const payload = { ...updatedDetails };
-        const response = await fetch(`${urlConfig.backendUrl}/api/auth/update`, {
-        //Step 1: Task 1
-        //Step 1: Task 2
-        //Step 1: Task 3
-        });
-
-        if (response.ok) {
-        // Update the user details in session storage
-        //Step 1: Task 4
-        //Step 1: Task 5
-        setUserDetails(updatedDetails);
-        setEditMode(false);
-        // Display success message to the user
-        setChanged("Name Changed Successfully!");
-        setTimeout(() => {
-            setChanged("");
-            navigate("/");
-        }, 1000);
-
-        } else {
-        // Handle error case
-        throw new Error("Failed to update profile");
-        }
-    } catch (error) {
-        console.error(error);
-        // Handle error case
-    }
     };
 
     return (
@@ -134,3 +137,4 @@ const Profile = () => {
 };
 
 export default Profile;
+
