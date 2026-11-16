@@ -4,7 +4,7 @@ import MainPage from './components/MainPage/MainPage';
 import RegisterPage from './components/RegisterPage/RegisterPage';
 import LoginPage from './components/LoginPage/LoginPage';
 import DetailsPage from './components/DetailsPage/DetailsPage';
-
+import Profile from './components/Profile/Profile';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Navbar from './components/Navbar/Navbar';
