@@ -1,3 +1,5 @@
+/* jshint esversion: 8 */
+
 // Importing necessary libraries and modules
 const express = require('express');
 const bcryptjs = require('bcryptjs');
